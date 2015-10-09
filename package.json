@@ -4,7 +4,7 @@
   "description": "Generate lat/long coordinates for equilateral polygons around a center point.",
   "main": "index.js",
   "scripts": {
-    "test": "node test"
+    "test": "node test.js"
   },
   "author": {
     "name": "Jeremy Ho",
@@ -14,5 +14,8 @@
   "repository": {
     "type": "git",
     "url": "git@github.com:Jeloi/polygon-coordinates.git"
+  },
+  "devDependencies": {
+    "tape": "^4.2.1"
   }
 }

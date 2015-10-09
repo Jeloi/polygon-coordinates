@@ -34,7 +34,5 @@ function radiansToDegrees(radians) {
 
 module.exports = {
   getDestinationCoordinate: destinationCoordinate,
-  polygonCoordinates: polygonCoordinates,
-  degreesToRadians: degreesToRadians,
-  radiansToDegrees: radiansToDegrees
+  polygonCoordinates: polygonCoordinates
 };

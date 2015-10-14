@@ -31,12 +31,14 @@ function polygonCoordinates(latitude, longitude, numVertices, radiusKm, opts) {
   var coordinateArray = [];
   var centralAngle = 360/numVertices;
 
-  for (var bearing = opts.startBearing; bearing < 360 - opts.startBearing; bearing+=centralAngle) {
+  var bearing = opts.startBearing;
+  while (bearing < 360 || (bearing > 360 && (bearing % 360 < opts.startBearing))) {
     var coordinate = destinationCoordinate(latitude, longitude, bearing, radiusKm);
     var coordinateTuple = [coordinate.latitude, coordinate.longitude];
     if (opts.coordinateOrder == 'yx') {
       coordinateTuple.reverse();
     }
+    bearing = bearing + centralAngle;
     coordinateArray.push(coordinateTuple);
   }
   if (opts.closeRing) {

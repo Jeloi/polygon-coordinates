@@ -5,7 +5,7 @@ Generate coordinates for equilateral polygons around a center point.
 ## Example
 
 ```js
-var centerCoordinate = [40.727093, -73.97864];
+var centerCoordinate = [40.727093, -73.97864]; // lat, long
 var hexagon = PolygonCoordinates.polygonCoordinates(centerCoordinate, 6, 1);
 console.log(hexagon)
 /* [ [ 40.73608566148679, -73.97864 ],
@@ -22,6 +22,9 @@ var pointA = [40.727093, -73.97864];
 var destinationCoord = PolygonCoordinates.destinationCoordinate(pointA, 90, 1);
 // Result is a point 1km away from pointA, with a 90 degree bearing.
 ```
+
+## Methods
+
 
 ## Installation
 

@@ -2,11 +2,18 @@
 
 var test = require('tape');
 
-var PolygonCoordinates = require('./index');
+var index = require('./index');
 
-test('it draws a triacontakaihexagon in NYC', function t(assert) {
-    var somewhereInNYC = [40.727093, -73.97864];
-    var result = PolygonCoordinates.polygonCoordinates(somewhereInNYC, 36, 1);
+var polygonCoordinates = index.polygonCoordinates;
+var getDestinationCoordinate = index.getDestinationCoordinate();
+
+var somewhereInNYC = {
+    lat: 40.727093,
+    lng: -73.97864
+};
+
+test('it draws a triacontakaihexagon in NYC, default case', function t(assert) {
+    var result = polygonCoordinates(somewhereInNYC.lat, somewhereInNYC.lng, 36, 1);
     assert.looseEqual(result, [
         [ 40.73608566148679, -73.97864 ],
         [ 40.73594902442798, -73.97657914786018 ],
@@ -45,5 +52,68 @@ test('it draws a triacontakaihexagon in NYC', function t(assert) {
         [ 40.73554326655348, -73.98269906157638 ],
         [ 40.73594902442798, -73.9807008521398 ]
     ], ' - plotted on a map and its beautiful');
+    assert.end();
+});
+
+test('it should set the radius in km', function t(assert) {
+    var result = polygonCoordinates(somewhereInNYC.lat, somewhereInNYC.lng, 4, 2);
+    assert.looseEqual(result,
+        [
+            [40.74507832297359, -73.97864],
+            [40.7270905696648, -73.95490721049943],
+            [40.70910767702642, -73.97864],
+            [40.7270905696648, -74.00237278950055]
+        ]
+    );
+    assert.end();
+});
+
+test('respect the opt.coordinateOrder and create yx coordinates', function t(assert) {
+    var result = polygonCoordinates(somewhereInNYC.lat, somewhereInNYC.lng, 4, 2, {
+        coordinateOrder: 'yx'
+    });
+    assert.looseEqual(result,
+        [
+            [ -73.97864, 40.74507832297359 ],
+            [ -73.95490721049943, 40.7270905696648 ],
+            [ -73.97864, 40.70910767702642 ],
+            [ -74.00237278950055, 40.7270905696648 ]
+        ]
+    );
+    assert.end();
+});
+
+
+test('respect opt.closeRing and close the ring', function t(assert) {
+    var result = polygonCoordinates(somewhereInNYC.lat, somewhereInNYC.lng, 4, 2, {
+        closeRing: true
+    });
+    assert.looseEqual(result,
+        [
+            [40.74507832297359, -73.97864],
+            [40.7270905696648, -73.95490721049943],
+            [40.70910767702642, -73.97864],
+            [40.7270905696648, -74.00237278950055],
+            [40.74507832297359, -73.97864]
+        ]
+    );
+    assert.equal(result.length, 5);
+    assert.equal(result[0], result[result.length - 1]);
+    assert.end();
+});
+
+test('respect opt.startBearing and create a rotated polygon', function t(assert) {
+    var result = polygonCoordinates(somewhereInNYC.lat, somewhereInNYC.lng, 4, 2, {
+        startBearing: 45
+    });
+    assert.looseEqual(result,
+        [
+            [ 40.739809328332115, -73.96185517553124 ],
+            [ 40.7143742413325, -73.96186158949864 ],
+            [ 40.7143742413325, -73.99541841050136 ],
+            [ 40.739809328332115, -73.99542482446876 ]
+        ]
+    );
+    assert.equal(result.length, 4);
     assert.end();
 });
